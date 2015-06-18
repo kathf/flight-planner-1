@@ -1,0 +1,3 @@
+<%= @stopovers.each do |stop| %>
+  <li> <%= Airport.find_by(code: stop) %> </li>
+<% end %>
