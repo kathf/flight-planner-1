@@ -1,8 +1,9 @@
 class CreateRoutes < ActiveRecord::Migration
   def change
     create_table :routes do |t|
-      t.string :destination
-      t.string :origin
+      t.integer :destination_id, as: :airport_id
+      t.integer :origin_id, as: :airport_id
+      t.references :carrier
       t.timestamps null: false
     end
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616065907) do
+ActiveRecord::Schema.define(version: 20150618045612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,25 +29,27 @@ ActiveRecord::Schema.define(version: 20150616065907) do
   end
 
   create_table "carriers", force: :cascade do |t|
-    t.string   "code"
     t.string   "name"
+    t.string   "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "flights", force: :cascade do |t|
-    t.integer  "route_id"
-    t.integer  "way_id"
-    t.integer  "carrier_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "legs", force: :cascade do |t|
+    t.datetime "departure"
+    t.datetime "arrival"
+    t.integer  "origin"
+    t.integer  "destination"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "routes", force: :cascade do |t|
-    t.string   "destination"
-    t.string   "origin"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "destination_id"
+    t.integer  "origin_id"
+    t.integer  "carrier_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -70,12 +72,9 @@ ActiveRecord::Schema.define(version: 20150616065907) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "ways", force: :cascade do |t|
-    t.string   "start_airport"
-    t.string   "end_airport"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "leg_array",  default: [],              array: true
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
 end

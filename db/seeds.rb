@@ -10,14 +10,20 @@
 require 'csv'
 
 
-CSV.foreach("db/seeds/routes.csv", :headers => true, :encoding => 'windows-1251:utf-8') do |row|
-  Route.create!(row.to_hash)
-end
-
-CSV.foreach("db/seeds/carriers.csv", :headers => true, :encoding => 'windows-1251:utf-8') do |row|
+CSV.foreach("db/seeds/carriers.csv", :headers => true) do |row|
   Carrier.create!(row.to_hash)
 end
 
-CSV.foreach("db/seeds/airports2.csv", :headers => true) do |row|
+CSV.foreach("db/seeds/airports5.csv", :headers => true) do |row|
   Airport.create!(row.to_hash)
+end
+
+CSV.foreach("db/seeds/routes3.csv", :headers => true) do |row|
+  row_hash = row.to_hash
+  set_origin = Airport.find_by(code: row_hash["origin"])
+  set_dest = Airport.find_by(code: row_hash["destination"])
+  set_carrier = Carrier.find_by(code: row_hash["airline"])
+  if set_origin && set_dest && set_carrier
+    Route.create(destination_id: set_dest.id, origin_id: set_origin.id, carrier_id: set_carrier.id)
+  end
 end

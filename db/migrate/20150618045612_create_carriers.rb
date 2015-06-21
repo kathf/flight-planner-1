@@ -1,8 +1,8 @@
 class CreateCarriers < ActiveRecord::Migration
   def change
     create_table :carriers do |t|
-      t.string :code
       t.string :name
+      t.string :code
       t.timestamps null: false
     end
   end

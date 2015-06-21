@@ -1,3 +1,3 @@
 class Carrier < ActiveRecord::Base
-  has_many :fight
+  has_many :routes
 end

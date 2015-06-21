@@ -1,8 +1,19 @@
 class Route < ActiveRecord::Base
-  has_many :flight
-  has_and_belongs_to_many :airports
+  belongs_to :origin, class_name: "Airport", foreign_key: 'origin_id'
+  belongs_to :destination, class_name: "Airport", foreign_key: 'destination_id'
+  belongs_to :carrier
+  has_many :legs
 
-  def self.stopover(start, finish)
-    where('origin = ?', start).pluck(:destination) && where('destination = ?', finish).pluck(:origin)
+  validates :destination_id, :origin_id, :carrier_id, presence: true
+
+  #returns an array of airport ids which connects the start airport and finish airport (entered as ids)
+  def self.stopovers(start, finish)
+    airport_array = where('origin_id = ?', start).pluck(:destination_id) & where('destination_id = ?', finish).pluck(:origin_id)
+    if airport_array.empty?
+      ["No stopovers for this selection"]
+    else
+      return airport_array
+    end
   end
+
 end

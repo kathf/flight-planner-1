@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  root 'ways#index'
+  root 'legs#index'
 
   resources :ways
+  resources :legs
 
   resources :flights do
     resources :routes
